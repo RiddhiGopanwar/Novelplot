@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Book, Quote, Shelf } from "./types";
@@ -83,7 +84,7 @@ function bookToRow(book: Book, userId: string): BookRow & { user_id: string } {
 }
 
 export async function getBooks(): Promise<Book[]> {
-  const { data, error } = await supabase
+  const { data, error } = await supabase()
     .from("books")
     .select("*")
     .order("date_added", { ascending: false });
@@ -94,12 +95,12 @@ export async function getBooks(): Promise<Book[]> {
 export async function upsertBook(book: Book): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  await supabase.from("books").upsert(bookToRow(book, userId));
+  await supabase().from("books").upsert(bookToRow(book, userId));
 }
 
 export async function deleteBook(id: string): Promise<void> {
   // shelf_books rows for this book cascade-delete automatically (FK ON DELETE CASCADE).
-  await supabase.from("books").delete().eq("id", id);
+  await supabase().from("books").delete().eq("id", id);
 }
 
 /** Clamp a page-progress update, auto-complete the book if it reaches the end. */
@@ -164,7 +165,7 @@ function rowToQuote(row: QuoteRow): Quote {
 }
 
 export async function getQuotes(): Promise<Quote[]> {
-  const { data, error } = await supabase
+  const { data, error } = await supabase()
     .from("quotes")
     .select("*")
     .order("date_added", { ascending: false });
@@ -175,7 +176,7 @@ export async function getQuotes(): Promise<Quote[]> {
 export async function addQuote(quote: Quote): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  await supabase.from("quotes").insert({
+  await supabase().from("quotes").insert({
     id: quote.id,
     user_id: userId,
     text: quote.text,
@@ -187,7 +188,7 @@ export async function addQuote(quote: Quote): Promise<void> {
 }
 
 export async function updateQuote(quote: Quote): Promise<void> {
-  await supabase
+  await supabase()
     .from("quotes")
     .update({
       text: quote.text,
@@ -199,7 +200,7 @@ export async function updateQuote(quote: Quote): Promise<void> {
 }
 
 export async function deleteQuote(id: string): Promise<void> {
-  await supabase.from("quotes").delete().eq("id", id);
+  await supabase().from("quotes").delete().eq("id", id);
 }
 
 // ---------------------------------------------------------------
@@ -207,13 +208,13 @@ export async function deleteQuote(id: string): Promise<void> {
 // ---------------------------------------------------------------
 
 export async function getShelves(): Promise<Shelf[]> {
-  const { data: shelfRows, error } = await supabase
+  const { data: shelfRows, error } = await supabase()
     .from("shelves")
     .select("*")
     .order("created_at", { ascending: true });
   if (error || !shelfRows) return [];
 
-  const { data: linkRows } = await supabase.from("shelf_books").select("shelf_id, book_id");
+  const { data: linkRows } = await supabase().from("shelf_books").select("shelf_id, book_id");
   const linksByShelf: Record<string, string[]> = {};
   (linkRows || []).forEach((l: { shelf_id: string; book_id: string }) => {
     if (!linksByShelf[l.shelf_id]) linksByShelf[l.shelf_id] = [];
@@ -231,7 +232,7 @@ export async function getShelves(): Promise<Shelf[]> {
 export async function addShelf(shelf: Shelf): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  await supabase.from("shelves").insert({
+  await supabase().from("shelves").insert({
     id: shelf.id,
     user_id: userId,
     name: shelf.name,
@@ -240,19 +241,19 @@ export async function addShelf(shelf: Shelf): Promise<void> {
 }
 
 export async function renameShelf(id: string, name: string): Promise<void> {
-  await supabase.from("shelves").update({ name }).eq("id", id);
+  await supabase().from("shelves").update({ name }).eq("id", id);
 }
 
 export async function deleteShelf(id: string): Promise<void> {
   // Deleting a shelf only removes the shelf itself; the books it referenced
   // stay in the main library untouched (shelf_books rows just cascade away).
-  await supabase.from("shelves").delete().eq("id", id);
+  await supabase().from("shelves").delete().eq("id", id);
 }
 
 export async function toggleBookOnShelf(shelfId: string, bookId: string): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  const { data } = await supabase
+  const { data } = await supabase()
     .from("shelf_books")
     .select("shelf_id")
     .eq("shelf_id", shelfId)
@@ -260,9 +261,9 @@ export async function toggleBookOnShelf(shelfId: string, bookId: string): Promis
     .maybeSingle();
 
   if (data) {
-    await supabase.from("shelf_books").delete().eq("shelf_id", shelfId).eq("book_id", bookId);
+    await supabase().from("shelf_books").delete().eq("shelf_id", shelfId).eq("book_id", bookId);
   } else {
-    await supabase.from("shelf_books").insert({ shelf_id: shelfId, book_id: bookId, user_id: userId });
+    await supabase().from("shelf_books").insert({ shelf_id: shelfId, book_id: bookId, user_id: userId });
   }
 }
 
@@ -277,7 +278,7 @@ export interface SavedPersonality {
 }
 
 export async function getSavedPersonality(): Promise<SavedPersonality | null> {
-  const { data, error } = await supabase.from("personality_results").select("*").maybeSingle();
+  const { data, error } = await supabase().from("personality_results").select("*").maybeSingle();
   if (error || !data) return null;
   return { trait: data.trait, reasons: data.reasons ?? [], computedAt: data.computed_at };
 }
@@ -285,7 +286,7 @@ export async function getSavedPersonality(): Promise<SavedPersonality | null> {
 export async function savePersonalityResult(trait: string, reasons: string[]): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  await supabase.from("personality_results").upsert({
+  await supabase().from("personality_results").upsert({
     user_id: userId,
     trait,
     reasons,
@@ -296,5 +297,6 @@ export async function savePersonalityResult(trait: string, reasons: string[]): P
 export async function clearPersonalityResult(): Promise<void> {
   const userId = await currentUserId();
   if (!userId) return;
-  await supabase.from("personality_results").delete().eq("user_id", userId);
+  await supabase().from("personality_results").delete().eq("user_id", userId);
 }
+```
