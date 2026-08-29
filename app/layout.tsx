@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   title: "The Novel Plot",
   description: "A cozy personal reading companion.",
 };
-
+export const dynamic = "force-dynamic";
 export default function RootLayout({
   children,
 }: {
