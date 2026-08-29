@@ -1,4 +1,5 @@
 # The Novel Plot 📖
+https://novelplot.vercel.app/
 
 A cozy, editorial personal reading companion, now multi-user, built with
 Next.js (App Router), React, TypeScript, Tailwind CSS, and Supabase
