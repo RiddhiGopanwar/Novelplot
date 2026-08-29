@@ -299,4 +299,4 @@ export async function clearPersonalityResult(): Promise<void> {
   if (!userId) return;
   await supabase().from("personality_results").delete().eq("user_id", userId);
 }
-```
+
