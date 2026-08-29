@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #F7F2E0;
+  background-image:
+    radial-gradient(circle, rgba(91,0,21,0.08) 1px, transparent 1px),
+    radial-gradient(circle at 12% 8%, rgba(128, 174, 232, 0.18), transparent 42%),
+    radial-gradient(circle at 88% 15%, rgba(91, 0, 21, 0.08), transparent 45%);
+  background-size: 20px 20px, auto, auto;
+}
+
+::selection {
+  background: #9DC2EF;
+  color: #5B0015;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #80AEE8 #F0E8D0;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #F0E8D0;
+}
+*::-webkit-scrollbar-thumb {
+  background: #80AEE8;
+  border-radius: 999px;
+}
+
+/* Editorial card: paper surface, ink border, hard "pop" shadow, playful hover lift */
+.card {
+  @apply relative rounded-3xl border-2 border-plum bg-paper shadow-pop-sm transition-all duration-200;
+}
+.card:hover {
+  @apply -translate-y-1 shadow-pop;
+}
+
+.section-title {
+  @apply font-display text-2xl font-semibold text-plum sm:text-3xl;
+}
+
+.eyebrow {
+  @apply inline-flex w-fit items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.15em] text-plum-soft;
+}
+
+.chip {
+  @apply inline-flex items-center gap-1 rounded-full border-2 border-plum px-3 py-1 text-xs font-bold;
+}
+
+/* Rounded pill button with a small filled dot, like the reference's CTA buttons */
+.btn-pill {
+  @apply inline-flex items-center gap-2 rounded-full border-2 border-plum bg-paper px-5 py-2.5 text-sm font-bold text-plum shadow-pop-sm transition-all hover:-translate-y-0.5 hover:shadow-pop;
+}
+.btn-pill-dot::before {
+  content: "";
+  @apply h-2.5 w-2.5 rounded-full bg-red;
+}
+
+/* Primary solid matte-red CTA, for the single most important action on a screen */
+.btn-primary {
+  @apply inline-flex items-center gap-2 rounded-full border-2 border-plum bg-red px-5 py-2.5 text-sm font-bold text-cream shadow-pop-sm transition-all hover:-translate-y-0.5 hover:shadow-pop hover:bg-red-deep;
+}
+
+/* Highlighter mark behind key headline phrases */
+.mark-red {
+  background: linear-gradient(180deg, transparent 58%, #9DC2EF 58%);
+}
+.mark-coffee {
+  background: linear-gradient(180deg, transparent 58%, #E3B8C2 58%);
+}
+
+/* Sticker: a small rotated badge floating over a section, like handwritten notes */
+.sticker {
+  @apply absolute rounded-2xl border-2 border-plum bg-paper px-3 py-1.5 text-xs font-bold shadow-pop-sm;
+}
+
+/* Jagged starburst sticker badge, like a hand-cut paper label */
+.sticker-jagged {
+  @apply absolute border-2 border-plum px-5 py-4 text-center text-xs font-bold shadow-pop-sm;
+  clip-path: polygon(
+    50% 0%, 61% 10%, 75% 4%, 80% 18%, 94% 18%, 92% 33%,
+    100% 42%, 88% 50%, 100% 58%, 92% 67%, 94% 82%, 80% 82%,
+    75% 96%, 61% 90%, 50% 100%, 39% 90%, 25% 96%, 20% 82%,
+    6% 82%, 8% 67%, 0% 58%, 12% 50%, 0% 42%, 8% 33%,
+    6% 18%, 20% 18%, 25% 4%, 39% 10%
+  );
+}
+
+.paper-grid {
+  background-image: linear-gradient(rgba(91,0,21,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91,0,21,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

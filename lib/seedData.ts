@@ -1,0 +1,95 @@
+import { Book, Quote, Shelf } from "./types";
+
+export const seedBooks: Book[] = [
+  {
+    id: "b1",
+    title: "The Night Circus",
+    author: "Erin Morgenstern",
+    status: "currently-reading",
+    currentPage: 214,
+    totalPages: 512,
+    genre: "Fantasy",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 6).toISOString(),
+  },
+  {
+    id: "b2",
+    title: "Convenience Store Woman",
+    author: "Sayaka Murata",
+    status: "completed",
+    currentPage: 176,
+    totalPages: 176,
+    rating: 5,
+    genre: "Literary Fiction",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 40).toISOString(),
+    dateCompleted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 33).toISOString(),
+  },
+  {
+    id: "b3",
+    title: "Piranesi",
+    author: "Susanna Clarke",
+    status: "completed",
+    currentPage: 245,
+    totalPages: 245,
+    rating: 4,
+    genre: "Fantasy",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 70).toISOString(),
+    dateCompleted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 60).toISOString(),
+  },
+  {
+    id: "b4",
+    title: "Klara and the Sun",
+    author: "Kazuo Ishiguro",
+    status: "want-to-read",
+    currentPage: 0,
+    totalPages: 303,
+    genre: "Science Fiction",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3).toISOString(),
+  },
+  {
+    id: "b5",
+    title: "Legends & Lattes",
+    author: "Travis Baldree",
+    status: "want-to-read",
+    currentPage: 0,
+    totalPages: 296,
+    genre: "Cozy Fantasy",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
+  },
+  {
+    id: "b6",
+    title: "Circe",
+    author: "Madeline Miller",
+    status: "completed",
+    currentPage: 393,
+    totalPages: 393,
+    rating: 5,
+    genre: "Mythology",
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 100).toISOString(),
+    dateCompleted: new Date(Date.now() - 1000 * 60 * 60 * 24 * 90).toISOString(),
+  },
+];
+
+export const seedQuotes: Quote[] = [
+  {
+    id: "q1",
+    text: "The world is quiet here.",
+    book: "Piranesi",
+    author: "Susanna Clarke",
+    page: 12,
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 55).toISOString(),
+  },
+  {
+    id: "q2",
+    text: "Let me be a monster. I am done with the smallness of being human.",
+    book: "Circe",
+    author: "Madeline Miller",
+    page: 340,
+    dateAdded: new Date(Date.now() - 1000 * 60 * 60 * 24 * 88).toISOString(),
+  },
+];
+
+export const seedShelves: Shelf[] = [
+  { id: "s1", name: "Comfort Reads", emoji: "🍵", bookIds: ["b2", "b3"] },
+  { id: "s2", name: "Cozy Fantasy", emoji: "🌙", bookIds: ["b1", "b5"] },
+  { id: "s3", name: "Favourites", emoji: "⭐", bookIds: ["b6", "b3"] },
+];
