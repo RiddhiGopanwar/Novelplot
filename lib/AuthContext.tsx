@@ -19,9 +19,13 @@ const AuthContext = createContext<AuthContextValue>({
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
+    // Created inside the effect, not in the component body: effects never
+    // run during server-side rendering/build, only in the actual browser,
+    // so this can never be evaluated before env vars are available.
+    const supabase = createClient();
+
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user ?? null);
       setLoading(false);
@@ -34,11 +38,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   async function signOut() {
+    const supabase = createClient();
     await supabase.auth.signOut();
     setUser(null);
     window.location.href = "/";
