@@ -3,12 +3,23 @@
 import { Book, Quote, Shelf } from "./types";
 import { createClient } from "./supabase/client";
 
-const supabase = createClient();
+// Lazily create the Supabase client on first actual use, not at module
+// import time. Next.js evaluates page modules (which import this file)
+// during the build process itself to build its route manifest — if the
+// client were constructed at module scope, that build-time evaluation
+// would try to create it before env vars are necessarily available in
+// that context, crashing `next build` even for routes marked dynamic.
+let _supabase: ReturnType<typeof createClient> | null = null;
+function supabase() {
+  if (!_supabase) _supabase = createClient();
+  return _supabase;
+}
 
 async function currentUserId(): Promise<string | null> {
-  const { data } = await supabase.auth.getUser();
+  const { data } = await supabase().auth.getUser();
   return data.user?.id ?? null;
 }
+
 
 // Kept as a no-op so existing call sites don't need to change. New accounts
 // must always start completely empty, no seeded/demo data, so this
