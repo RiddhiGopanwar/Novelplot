@@ -19,70 +19,7 @@ All reading data (books, shelves, quotes, personality result) lives in
 Supabase Postgres, scoped to your account with Row Level Security — nobody
 else can see or touch your library.
 
-## Getting started
 
-```bash
-npm install
-```
-
-Then set up Supabase (see below) before running:
-
-```bash
-npm run dev
-```
-
-Open http://localhost:3000.
-
-## Supabase setup (required)
-
-1. Create a free project at https://supabase.com
-2. In **Project Settings > API**, copy the **Project URL** and the
-   **anon public** key
-3. Add them to `.env.local` (already has a Google Books key in it, just add
-   these two lines):
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your-project-url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   ```
-4. In the Supabase dashboard, open **SQL Editor**, paste in the full
-   contents of `supabase/schema.sql` from this project, and run it once.
-   This creates the `books`, `shelves`, `shelf_books`, `quotes`, and
-   `personality_results` tables, all with Row Level Security policies so
-   each user can only ever read or write their own rows.
-5. By default, Supabase requires email confirmation for new sign-ups. For
-   local development you can turn this off in **Authentication > Providers
-   > Email > Confirm email**, or just click the confirmation link Supabase
-   emails to you.
-
-New accounts always start completely empty, no demo books, no seeded
-shelves, nothing added automatically. Every book only enters a library
-because the signed-in user explicitly clicked "Add to Want to Read,"
-"Start Reading," or "Add to Shelf."
-
-## Build
-
-```bash
-npm run typecheck
-npm run build
-```
-
-## Deploying to Vercel / Netlify
-
-1. Push this project to a GitHub repo (or deploy the zip directly).
-2. Import the repo in Vercel or Netlify.
-3. Add these environment variables in your host's dashboard (required,
-   `.env.local` is gitignored and won't be picked up by your host's build):
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY` (optional but recommended, improves
-     Discover search reliability)
-4. Deploy.
-
-Both Supabase's anon key and the Google Books key are designed to be
-exposed to the browser, real protection comes from Supabase's Row Level
-Security policies (in `supabase/schema.sql`), not from hiding these keys.
-For extra safety, you can still restrict the Google Books key by HTTP
-referrer in the Google Cloud Console.
 
 ## Project structure
 
